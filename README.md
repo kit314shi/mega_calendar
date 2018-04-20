@@ -17,7 +17,7 @@ Standard redmine plugin installation: You can read the generic plugin installati
 Go to your redmine plugins-folder<br>
 <code>cd /srv/redmine/plugins</code><br>
 Download the latest plugin-Version:<br>
-<code>wget https://github.com/berti92/mega_calendar/archive/master.zip</code><br>
+<code>wget https://github.com/kit314shi/mega_calendar/archive/master.zip</code><br>
 Unzip the downloaded zip-File<br>
 <code>unzip master.zip</code><br>
 Rename the folder:<br>
@@ -44,6 +44,30 @@ If you got installation problems, then please have a look at the [wiki](https://
 Within a issue you are able to set a time as start and end, to get a better calendar view. On top of the page you can reach the calendar and holiday section.
 
 Please make sure that you set your users, that will be allowed to use this plugin and that the sub-path is set to "/" without quotes at the plugin settings.
+
+<h2>Work With View Customize</h2>
+If you want more holiday types, then go to plugin settings and put the definition of types like below.
+```
+holiday:holiday,
+leave-early:leave early,
+come-late:come late,
+come-straight-home:come straight home,
+```
+
+Now you can customize the look of holidays with View Customize Plugin.
+
+```
+Stylesheet
+```
+```
+.hc-holiday {
+  background-color: lightblue !important;
+}
+
+.hc-leave-early {
+  background-color: lightgray !important;
+}
+```
 
 <h2>Screenshots</h2>
 
