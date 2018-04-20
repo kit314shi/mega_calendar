@@ -1,10 +1,17 @@
 class CalendarController < ApplicationController
   unloadable
 
-  before_filter(:check_plugin_right)
+  before_filter :authorize_global
+  before_filter :parse_kind_setting
 
+  def parse_kind_setting
+    @kind_hash = {}
+    Setting.plugin_mega_calendar['holiday_kind'].scan(/([^:]+):\s*([^,]+),?/u){|k,v| @kind_hash[k.to_s.strip] = v.to_s.strip }
+  end
+			
   def check_plugin_right
     right = (!Setting.plugin_mega_calendar['allowed_users'].blank? && Setting.plugin_mega_calendar['allowed_users'].include?(User.current.id.to_s) ? true : false)
+	right = true
     if !right
       flash[:error] = translate 'no_right'
       redirect_to({:controller => :welcome})
@@ -127,10 +134,6 @@ class CalendarController < ApplicationController
   def form_holiday(holiday)
     ret_var = '<table>'
     ret_var << '<tr>'
-    ret_var << '<td>' + (translate 'user') + '</td>'
-    ret_var << '<td>' + holiday.user.login + '</td>' rescue '<td></td>'
-    ret_var << '</tr>'
-    ret_var << '<tr>'
     ret_var << '<td>' + (translate 'start') + '</td>'
     ret_var << '<td>' + holiday.start.to_date.to_s + '</td>' rescue '<td></td>'
     ret_var << '</tr>'
@@ -138,6 +141,11 @@ class CalendarController < ApplicationController
     ret_var << '<td>' + (translate 'end') + '</td>'
     ret_var << '<td>' + holiday.end.to_date.to_s + '</td>' rescue '<td></td>'
     ret_var << '</tr>'
+    ret_var << '<tr>'
+    ret_var << '<td>' + (translate 'detail') + '</td>'
+    ret_var << '<td>' + holiday.detail.to_s + '</td>' rescue '<td></td>'
+    ret_var << '</tr>'
+    ret_var << '</table>'
     ret_var << '</table>'
     return ret_var
   end
@@ -210,7 +218,7 @@ class CalendarController < ApplicationController
     @events = []
     def_holiday = '#' + Setting.plugin_mega_calendar['default_holiday_color']
     def_color = '#' + Setting.plugin_mega_calendar['default_event_color']
-    @events = @events + holidays.collect {|h| {:id => h.id.to_s, :controller_name => 'holiday', :title => (h.user.blank? ? '' : h.user.login + ' - ') + (translate 'holiday'), :start => h.start.to_date.to_s, :end => (h.end + 1.day).to_date.to_s, :allDay => true, :color => def_holiday, :url => Setting.plugin_mega_calendar['sub_path'] + 'holidays/show?id=' + h.id.to_s, :className => 'calendar_event', :description => form_holiday(h) }}
+    @events = @events + holidays.collect {|h| {:id => h.id.to_s, :controller_name => 'holiday', :title => (@kind_hash[h.kind] + ' - ' ) + (h.user.blank? ? '' : h.who.to_s + ' - ') + (h.detail), :start => h.start.to_date.to_s, :end => (h.end + 1.day).to_date.to_s, :allDay => true, :color => def_holiday, :url => Setting.plugin_mega_calendar['sub_path'] + 'holidays/show?id=' + h.id.to_s, :className => 'calendar_event ' + 'hc-' + h.kind.to_s, :description => form_holiday(h) }}
     issues = issues + issues2 + issues3 + issues4
     issues = issues.compact.uniq
     issues.each do |i|

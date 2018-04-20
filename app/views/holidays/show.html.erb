@@ -4,8 +4,12 @@
 %>
   <table>
     <tr>
-      <td><label><%= translate 'user' %></label></td>
-      <td><%= user %></td>
+      <td><label><%= translate 'kind' %></label></td>
+      <td><%= @holiday.kind.blank? ? '' : @kind_hash[@holiday.kind].blank? ? '' : @kind_hash[@holiday.kind].to_s %></td>
+    </tr>
+    <tr>
+      <td><label><%= translate 'who' %></label></td>
+      <td><%= @holiday.who.blank? ? '' : @holiday.who.to_s %></td>
     </tr>
     <tr>
       <td><label><%= translate 'start' %></label></td>
@@ -14,6 +18,10 @@
     <tr>
       <td><label><%= translate 'end' %></label></td>
       <td><%= @holiday.end.blank? ? '' : @holiday.end.to_date.to_s %></td>
+    </tr>
+    <tr>
+      <td><label><%= translate 'detail' %></label></td>
+      <td><%= @holiday.detail.blank? ? '' : @holiday.detail.to_s %></td>
     </tr>
   </table>
 <a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/edit?id=<%= @holiday.id.to_s %>"><%= translate 'edit' %></a>

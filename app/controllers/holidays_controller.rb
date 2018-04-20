@@ -1,7 +1,8 @@
 class HolidaysController < ApplicationController
   unloadable
   
-  before_filter(:check_plugin_right)
+  before_filter :authorize_global
+  before_filter :parse_kind_setting
   
   def check_plugin_right
     right = (!Setting.plugin_mega_calendar['allowed_users'].blank? && Setting.plugin_mega_calendar['allowed_users'].include?(User.current.id.to_s) ? true : false)
@@ -9,6 +10,11 @@ class HolidaysController < ApplicationController
       flash[:error] = translate 'no_right'
       redirect_to({:controller => :welcome})
     end
+  end
+
+  def parse_kind_setting
+	@kind_hash = {}
+	Setting.plugin_mega_calendar['holiday_kind'].scan(/([^:]+):\s*([^,]+),?/u){|k,v| @kind_hash[k.to_s.strip] = v.to_s.strip }
   end
 
   def index

@@ -20,6 +20,12 @@
       </td>
     </tr>
     <tr>
+      <th><%= translate 'def_holiday_kind' %></th>
+      <td>
+        <textarea id="settings_holiday_kind" name="settings[holiday_kind]" rows="10" cols="46"><%= settings['holiday_kind'] %></textarea> 
+      </td>
+    </tr>
+    <tr>
       <th><%= translate 'display_empty_dates' %></th>
       <td>
         <select name="settings[display_empty_dates]">
@@ -91,7 +97,9 @@
       $('#settings_displayed_users').prop('disabled', true);
     }
   }
+
   $(function() {
     show_user_group_select('<%= Setting.plugin_mega_calendar['displayed_type'] %>');
   });
+
 </script>

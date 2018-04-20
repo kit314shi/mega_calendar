@@ -7,16 +7,22 @@
 
 <form action="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/update">
   <input type="hidden" name="holiday[id]" value="<%= params[:id] %>" />
+  <input type="hidden" name="holiday[user_id]" value="<%= @holiday.user_id.blank? ? User.current.id.to_s : @holiday.user_id %>" />
   <table>
     <tr>
-      <td><label><%= translate 'user' %></label></td>
+	  <td><label><%= translate 'kind' %></label></td>
+	  <td>
+	    <select name="holiday[kind]" id="holiday_kind">>
+		<% @kind_hash.each {|k,v| %>
+		  <option value="<%= k.to_s.strip %>"><%= v.to_s.strip %></option>
+		<% } %>
+		</select>
+	  </td>
+	</tr>
+    <tr>
+      <td><label><%= translate 'who' %></label></td>
       <td>
-        <select name="holiday[user_id]" id="holiday_user_id">
-            <option value=""><%= translate 'select_default' %></option>
-          <% Holiday.get_activated_users.each do |u| %>
-            <option value="<%= u.id.to_s %>"><%= u.login.to_s %></option>
-          <% end %>
-        </select>
+        <input type="text" id="holiday_who" name="holiday[who]" />
       </td>
     </tr>
     <tr>
@@ -26,6 +32,10 @@
     <tr>
       <td><label><%= translate 'end' %></label></td>
       <td><input type="text" id="holiday_end" name="holiday[end]" /></td>
+    </tr>
+    <tr>
+      <td><label><%= translate 'detail' %></label></td>
+      <td><input type="text" id="holiday_detail" name="holiday[detail]" /></td>
     </tr>
   </table>
 <input type="submit" value="<%= translate 'save' %>" />
@@ -71,5 +81,8 @@
  $("#holiday_start").datetimepicker(options_start);
  $("#holiday_end").datetimepicker(options_end);
  $("#holiday_user_id").val('<%= @holiday.user_id %>');
+ $("#holiday_detail").val('<%= @holiday.detail %>');
+ $("#holiday_kind").val('<%= @holiday.kind %>');
+ $("#holiday_who").val('<%= @holiday.who.to_s %>');
  });
 </script>

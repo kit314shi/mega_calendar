@@ -3,10 +3,14 @@ class Holiday < ActiveRecord::Base
   attr_accessible :user_id
   attr_accessible :start
   attr_accessible :end
+  attr_accessible :detail
+  attr_accessible :kind
+  attr_accessible :who
   belongs_to(:user)
   validates :start, :date => true
   validates :end, :date => true
   validates_presence_of :start, :end
+  validates :who, :kind, presence: true
   validate :validate_holiday
 
   def validate_holiday

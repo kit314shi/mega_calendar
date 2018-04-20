@@ -2,20 +2,26 @@
 
 <table width="100%" height="80%">
   <tr>
-    <td><%= translate 'user'%></td>
+	<td><%= translate 'kind' %></td>
+    <td><%= translate 'who'%></td>
     <td><%= translate 'start' %></td>
     <td><%= translate 'end' %></td>
+    <td><%= translate 'detail' %></td>
     <td><%= translate 'action' %></td>
   </tr>
+  <tr>
   <% @res.each do |row| %>
-      <td><%= row.user.blank? ? '' : row.user.login.to_s %></td>
+      <td><%= row.kind.blank? ? '' : @kind_hash[row.kind.to_s] %></td>
+      <td><%= row.who.blank? ? '' : row.who.to_s %></td>
       <td><%= row.start.blank? ? '' : row.start.to_date.to_s %></td>
       <td><%= row.end.blank? ? '' : row.end.to_date.to_s %></td>
+      <td><%= row.detail.blank? ? '' : row.detail.to_s %></td>
       <td><a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/show?id=<%= row.id.to_s %>"><%= translate 'show' %></a>&nbsp;<a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/destroy?id=<%= row.id.to_s %>"><%= translate 'destroy' %></a></td>
     </tr>
   <% end %>
   <% if @pagination == true %>
   <tr>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

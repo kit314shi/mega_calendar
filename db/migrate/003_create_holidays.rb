@@ -4,6 +4,8 @@ class CreateHolidays < ActiveRecord::Migration
       t.datetime :start
       t.datetime :end
       t.integer :user_id
+      t.string :detail
+      t.integer :kind
     end
   end
   def down
