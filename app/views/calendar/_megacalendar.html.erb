@@ -140,7 +140,7 @@
       },
       select: function(start, end) {
         $('#calendar').fullCalendar('unselect');
-        window.open('<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/new?start='+start.format("YYYY-MM-DD"), '_blank');
+        window.open('<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/new?start='+start.format("YYYY-MM-DD"), '_self');
       },
     });
     set_active_button(user_query);

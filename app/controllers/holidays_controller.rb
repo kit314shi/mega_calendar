@@ -38,14 +38,14 @@ class HolidaysController < ApplicationController
   def show
     @holiday = Holiday.where(:id => params[:id]).first rescue nil
     if @holiday.blank?
-      redirect_to(:controller => 'holidays', :action => 'index')
+      redirect_to(:controller => 'calendar', :action => 'index')
     end
   end
 
   def create
     @holiday = Holiday.new(params[:holiday])
     if @holiday.save
-      redirect_to(:controller => 'holidays', :action => 'show', :id => @holiday.id)
+      redirect_to(:controller => 'calendar', :action => 'index')
     else
       respond_to do |format|
         format.html { render :action => 'new' }
@@ -57,7 +57,7 @@ class HolidaysController < ApplicationController
   def edit
     @holiday = Holiday.find(params[:id]) rescue nil
     if @holiday.blank?
-      redirect_to(:controller => 'holidays', :action => 'index')
+      redirect_to(:controller => 'calendar', :action => 'index')
     end
   end
 
@@ -65,7 +65,7 @@ class HolidaysController < ApplicationController
     @holiday = Holiday.find(params[:holiday][:id]) rescue nil
     @holiday.assign_attributes(params[:holiday])
     if @holiday.save
-      redirect_to(:controller => 'holidays', :action => 'show', :id => @holiday.id)
+      redirect_to(:controller => 'calendar', :action => 'index')
     else
       respond_to do |format|
         format.html { render :action => 'new' }
@@ -77,6 +77,6 @@ class HolidaysController < ApplicationController
   def destroy
     holiday = Holiday.where(:id => params[:id]).first rescue nil
     holiday.destroy()
-    redirect_to(:controller => 'holidays', :action => 'index')
+    redirect_to(:controller => 'calendar', :action => 'index')
   end
 end
